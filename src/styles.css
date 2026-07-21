@@ -1,0 +1,79 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+:root {
+  --background: oklch(0.14 0.02 250);
+  --foreground: oklch(0.97 0.005 250);
+  --surface: oklch(0.18 0.025 255);
+  --surface-2: oklch(0.22 0.03 258);
+  --muted: oklch(0.28 0.025 258);
+  --muted-foreground: oklch(0.72 0.02 255);
+  --border: oklch(0.32 0.02 258 / 60%);
+  --primary: oklch(0.86 0.19 105);
+  --primary-foreground: oklch(0.15 0.03 255);
+  --accent: oklch(0.72 0.18 45);
+  --accent-foreground: oklch(0.15 0.03 255);
+  --ring: oklch(0.86 0.19 105);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.02em; }
+}
+
+@utility grain-overlay {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 3px 3px;
+    mix-blend-mode: overlay;
+  }
+}
+
+@utility glow-primary {
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
+              0 20px 60px -20px color-mix(in oklab, var(--primary) 50%, transparent);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
