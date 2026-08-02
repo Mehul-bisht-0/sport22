@@ -1,523 +1,468 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  Phone, Mail, Instagram, Facebook, Linkedin, Youtube,
+  ChevronDown, MapPin, Calendar, ArrowRight, CheckCircle2,
+  MessageCircle, Star, Users, Map, Award, Play
+} from "lucide-react";
+import * as Accordion from "@radix-ui/react-accordion";
+
+// Placeholder images from assets
 import heroImg from "@/assets/hero-corporate-sports.jpg";
 import badmintonImg from "@/assets/event-badminton.jpg";
-import offsiteImg from "@/assets/event-offsite.jpg";
-import seminarImg from "@/assets/event-seminar.jpg";
 import cricketImg from "@/assets/sport-cricket.jpg";
-import padelImg from "@/assets/sport-padel.jpg";
 import footballImg from "@/assets/sport-football.jpg";
-import trophyImg from "@/assets/moment-trophy.jpg";
-import crowdImg from "@/assets/moment-crowd.jpg";
-import kitImg from "@/assets/moment-kit.jpg";
+import padelImg from "@/assets/sport-padel.jpg";
 import shuttleImg from "@/assets/detail-shuttle.jpg";
-import scoreboardImg from "@/assets/detail-scoreboard.jpg";
+import kitImg from "@/assets/moment-kit.jpg";
 
 export const Route = createFileRoute("/")({
-  component: Landing,
+  component: SportsAcademyLanding,
 });
 
-const sports = [
-  { name: "Box Cricket", img: cricketImg },
-  { name: "Football", img: footballImg },
-  { name: "Badminton", img: badmintonImg },
-  { name: "Padel", img: padelImg },
-  { name: "Pickleball", img: padelImg },
-  { name: "Tennis", img: shuttleImg },
-  { name: "Basketball", img: footballImg },
-  { name: "Table Tennis", img: shuttleImg },
-];
+function SportsAcademyLanding() {
+  const [scrolled, setScrolled] = useState(false);
 
-const eventTypes = [
-  {
-    tag: "01 / Offsites",
-    title: "Corporate Offsites",
-    body: "Full-day team retreats with multi-sport tournaments, meals, and dedicated event managers across our Gurgaon venues.",
-    img: offsiteImg,
-    meta: "20–2000 pax · 4–10 hrs",
-  },
-  {
-    tag: "02 / R&R",
-    title: "Rewards & Recognition",
-    body: "Themed league nights, MVP trophies, live scoreboards and photo/video coverage — turn quarterly R&R into a moment your team remembers.",
-    img: trophyImg,
-    meta: "Themed nights · Trophies · Recap film",
-  },
-  {
-    tag: "03 / Conferences",
-    title: "Seminar & Conference Breakouts",
-    body: "Add a high-energy sports break to your conference agenda. Indoor venues, curated formats, 60–180 min slots that fit your schedule.",
-    img: seminarImg,
-    meta: "60–180 min · Indoor · On-site",
-  },
-];
-
-const logos = ["Google", "Deloitte", "EY", "Microsoft", "American Express", "PwC", "HCL", "Genpact"];
-
-const marqueeItems = [
-  "Turnkey offsites",
-  "★",
-  "12+ Gurgaon venues",
-  "★",
-  "Certified referees",
-  "★",
-  "Live scoreboards",
-  "★",
-  "Drone recap films",
-  "★",
-  "20 to 2000 pax",
-  "★",
-  "Dedicated event lead",
-  "★",
-];
-
-function Landing() {
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    const form = new FormData(e.currentTarget);
-    const payload = {
-      name: String(form.get("name") || "").trim().slice(0, 100),
-      company: String(form.get("company") || "").trim().slice(0, 100),
-      email: String(form.get("email") || "").trim().slice(0, 200),
-      phone: String(form.get("phone") || "").trim().slice(0, 20),
-      teamSize: String(form.get("teamSize") || ""),
-      eventType: String(form.get("eventType") || ""),
-      date: String(form.get("date") || ""),
-      notes: String(form.get("notes") || "").slice(0, 500),
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
     };
-    console.log("[sportyzo-lead]", payload);
-    await new Promise((r) => setTimeout(r, 600));
-    setLoading(false);
-    setSubmitted(true);
-  };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* NAV */}
-      <header className="sticky top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <a href="#top" className="flex items-center gap-2">
-            <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground font-black">S</span>
-            <span className="text-lg font-semibold tracking-tight">Sportyzo <span className="text-muted-foreground font-normal">Corporate</span></span>
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden font-sans">
+      
+      {/* 1. TOP UTILITY BAR */}
+      <div className="hidden md:flex bg-surface-2 text-muted-foreground py-2 px-6 text-xs justify-between items-center border-b border-border">
+        <div className="flex gap-6">
+          <a href="tel:+918527736149" className="flex items-center gap-1.5 hover:text-primary transition">
+            <Phone size={14} /> +91 85277 36149
           </a>
-          <nav className="hidden gap-8 text-sm text-muted-foreground md:flex">
-            <a href="#events" className="hover:text-foreground transition">Events</a>
-            <a href="#sports" className="hover:text-foreground transition">Sports</a>
-            <a href="#gallery" className="hover:text-foreground transition">Gallery</a>
-            <a href="#proof" className="hover:text-foreground transition">Clients</a>
+          <a href="mailto:sportyzowork@gmail.com" className="flex items-center gap-1.5 hover:text-primary transition">
+            <Mail size={14} /> sportyzowork@gmail.com
+          </a>
+        </div>
+        <div className="flex gap-4">
+          <a href="#" className="hover:text-primary transition"><Instagram size={14} /></a>
+          <a href="#" className="hover:text-primary transition"><Facebook size={14} /></a>
+          <a href="#" className="hover:text-primary transition"><Linkedin size={14} /></a>
+          <a href="#" className="hover:text-primary transition"><Youtube size={14} /></a>
+        </div>
+      </div>
+
+      {/* 2. STICKY MAIN NAV */}
+      <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-border shadow-sm' : 'bg-background border-b border-transparent'}`}>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <a href="#" className="flex items-center gap-2">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground font-black text-xl shadow-lg shadow-primary/20">S</span>
+            <span className="text-2xl font-bold tracking-tight">Sportyzo</span>
+          </a>
+          
+          <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
+            <a href="#about" className="hover:text-primary transition">About Us</a>
+            
+            <div className="group relative">
+              <button className="flex items-center gap-1 hover:text-primary transition py-2">
+                Sports <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
+              </button>
+              {/* Simple Mega Menu Dropdown */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-96 rounded-2xl bg-surface border border-border shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-4 grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Indoor</h4>
+                  <ul className="space-y-2">
+                    <li><a href="#" className="block text-sm hover:text-primary transition">Badminton</a></li>
+                    <li><a href="#" className="block text-sm hover:text-primary transition">Table Tennis</a></li>
+                    <li><a href="#" className="block text-sm hover:text-primary transition">Squash</a></li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Outdoor</h4>
+                  <ul className="space-y-2">
+                    <li><a href="#" className="block text-sm hover:text-primary transition">Cricket</a></li>
+                    <li><a href="#" className="block text-sm hover:text-primary transition">Football</a></li>
+                    <li><a href="#" className="block text-sm hover:text-primary transition">Tennis</a></li>
+                    <li><a href="#" className="block text-sm hover:text-primary transition">Padel</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <a href="#locations" className="hover:text-primary transition">Our Branches</a>
+            <a href="#events" className="hover:text-primary transition">Events</a>
+            <a href="#blogs" className="hover:text-primary transition">Blogs</a>
           </nav>
-          <a href="#enquiry" className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90 transition">
-            Get a quote
+
+          <a href="https://wa.me/918527736149" target="_blank" rel="noreferrer" className="hidden sm:flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground hover:scale-105 transition shadow-lg shadow-primary/30">
+            <MessageCircle size={18} /> Contact Us
           </a>
         </div>
       </header>
 
-      {/* HERO */}
-      <section id="top" className="relative overflow-hidden">
+      {/* 3. HERO SECTION */}
+      <section className="relative h-[85vh] min-h-[600px] flex items-center">
         <div className="absolute inset-0 -z-10">
-          <img src={heroImg} alt="" width={1600} height={1100} className="h-full w-full object-cover opacity-40" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background" />
-          <div className="absolute -top-40 -right-40 h-[600px] w-[600px] rounded-full bg-primary/20 blur-3xl" />
-          <div className="absolute top-1/3 -left-40 h-[500px] w-[500px] rounded-full bg-accent/10 blur-3xl" />
+          <img src={heroImg} alt="Sports action" className="h-full w-full object-cover opacity-30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/20" />
         </div>
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 pt-20 pb-24 lg:grid-cols-[1.15fr_1fr] lg:pt-32 lg:pb-32">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              Now booking Q1 2027 offsites — 12+ venues in Gurgaon
-            </span>
-            <h1 className="mt-6 text-5xl leading-[0.95] font-normal sm:text-6xl lg:text-7xl">
-              Corporate sports events,<br />
-              <em className="text-primary">played like a final.</em>
+        
+        <div className="mx-auto w-full max-w-7xl px-6 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary mb-6 backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </span>
+              Enrollments Open for 2026 Batch
+            </div>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold leading-[1.1] tracking-tight">
+              Premier Sports Academy in <span className="text-primary">Gurugram</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-              Sportyzo runs turnkey offsites, R&R tournaments and conference breakouts for teams of 20 to 2000 — across 12+ premium venues in Gurgaon. One partner. Zero logistics on your plate.
+            <p className="mt-6 text-lg text-muted-foreground max-w-xl">
+              Elevate your game with world-class facilities. We operate across <strong className="text-foreground">12+ locations</strong>, offering training in <strong className="text-foreground">8+ sports</strong> by <strong className="text-foreground">50+ certified coaches</strong>.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a href="#enquiry" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground glow-primary hover:scale-[1.02] transition">
-                Plan your event →
+            <div className="mt-10 flex flex-wrap gap-4">
+              <a href="#join" className="rounded-full bg-primary px-8 py-4 text-base font-bold text-primary-foreground hover:scale-105 transition shadow-xl shadow-primary/30 flex items-center gap-2">
+                Enroll Now <ArrowRight size={18} />
               </a>
-              <a href="#events" className="rounded-full border border-border bg-surface/60 px-6 py-3 text-sm font-semibold backdrop-blur hover:bg-surface transition">
-                See what we do
-              </a>
-            </div>
-
-            {/* Hero image mosaic */}
-            <div className="mt-12 grid grid-cols-3 gap-3 max-w-lg">
-              <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-border">
-                <img src={cricketImg} alt="Box cricket" loading="lazy" className="h-full w-full object-cover transition duration-700 hover:scale-110" />
-              </div>
-              <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-border translate-y-6">
-                <img src={trophyImg} alt="Trophy" loading="lazy" className="h-full w-full object-cover transition duration-700 hover:scale-110" />
-              </div>
-              <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-border">
-                <img src={padelImg} alt="Padel" loading="lazy" className="h-full w-full object-cover transition duration-700 hover:scale-110" />
-              </div>
-            </div>
-
-            <dl className="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-border pt-8">
-              {[
-                ["500+", "Teams hosted"],
-                ["12+", "Gurgaon venues"],
-                ["4.9★", "326 reviews"],
-              ].map(([n, l]) => (
-                <div key={l}>
-                  <dt className="font-display text-3xl text-primary">{n}</dt>
-                  <dd className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">{l}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-
-          {/* LEAD FORM */}
-          <div id="enquiry" className="relative lg:sticky lg:top-24 lg:self-start">
-            <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-primary/20 via-transparent to-accent/20 blur-2xl" />
-            <div className="rounded-3xl border border-border bg-surface/80 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-              <div className="flex items-center justify-between">
-                <h2 className="font-display text-2xl">Request a proposal</h2>
-                <span className="rounded-full bg-primary/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary">
-                  Reply in 2 hrs
-                </span>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Tell us about your team. We'll send a costed plan with venue options within 2 working hours.
-              </p>
-
-              {submitted ? (
-                <div className="mt-8 rounded-2xl border border-primary/40 bg-primary/10 p-6 text-center">
-                  <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-primary text-primary-foreground text-2xl">✓</div>
-                  <h3 className="mt-4 font-display text-2xl">You're in the queue.</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Our corporate team will reach out shortly. For anything urgent, WhatsApp us on +91 8527736149.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Field name="name" label="Full name" required placeholder="Priya Sharma" />
-                    <Field name="company" label="Company" required placeholder="Acme Inc." />
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Field name="email" type="email" label="Work email" required placeholder="you@company.com" />
-                    <Field name="phone" type="tel" label="Phone" required placeholder="+91 …" />
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <Label>Event type</Label>
-                      <select name="eventType" required className={selectCls} defaultValue="">
-                        <option value="" disabled>Select…</option>
-                        <option>Offsite / team retreat</option>
-                        <option>R&R tournament</option>
-                        <option>Seminar / conference breakout</option>
-                        <option>Corporate league (multi-week)</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
-                    <div>
-                      <Label>Team size</Label>
-                      <select name="teamSize" required className={selectCls} defaultValue="">
-                        <option value="" disabled>Select…</option>
-                        <option>20–50</option>
-                        <option>50–150</option>
-                        <option>150–500</option>
-                        <option>500+</option>
-                      </select>
-                    </div>
-                  </div>
-                  <Field name="date" type="date" label="Preferred date" />
-                  <div>
-                    <Label>Anything else?</Label>
-                    <textarea
-                      name="notes"
-                      rows={3}
-                      maxLength={500}
-                      placeholder="Preferred sports, venue area, budget indication…"
-                      className={`${inputCls} resize-none`}
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full rounded-xl bg-primary py-3.5 text-sm font-bold text-primary-foreground glow-primary hover:scale-[1.01] disabled:opacity-60 transition"
-                  >
-                    {loading ? "Sending…" : "Get my proposal →"}
-                  </button>
-                  <p className="text-[11px] text-muted-foreground">
-                    By submitting you agree to be contacted by Sportyzo about your event. No spam.
-                  </p>
-                </form>
-              )}
+              <button className="rounded-full border border-border bg-surface/50 px-8 py-4 text-base font-bold backdrop-blur-sm hover:bg-surface transition flex items-center gap-2">
+                <Play size={18} className="text-primary" /> Watch Video
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* MARQUEE */}
-      <section className="border-y border-border bg-primary text-primary-foreground overflow-hidden">
-        <div className="flex whitespace-nowrap py-4 animate-marquee">
-          {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((it, i) => (
-            <span key={i} className="mx-6 font-display text-2xl">{it}</span>
-          ))}
-        </div>
-      </section>
-
-      {/* LOGO STRIP */}
-      <section className="border-b border-border bg-surface/40">
-        <div className="mx-auto max-w-7xl overflow-hidden px-6 py-8">
-          <p className="text-center text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            Trusted by teams from
-          </p>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
-            {logos.map((l) => (
-              <span key={l} className="font-display text-xl text-muted-foreground/70">{l}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* EVENTS */}
-      <section id="events" className="mx-auto max-w-7xl px-6 py-24">
-        <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-          <div className="max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.25em] text-primary">What we run</p>
-            <h2 className="mt-3 text-4xl sm:text-5xl">One partner for every kind of corporate sports moment.</h2>
-          </div>
-          <p className="text-sm text-muted-foreground md:max-w-sm">
-            From a 90-minute conference break to a two-day sports offsite — we handle format design, venues, referees, catering, scoreboards and recap videos.
-          </p>
-        </div>
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {eventTypes.map((e, i) => (
-            <article key={e.title} className={`group relative overflow-hidden rounded-3xl border border-border bg-surface transition hover:border-primary/60 ${i === 1 ? "lg:translate-y-8" : ""}`}>
-              <div className="aspect-[4/5] overflow-hidden">
-                <img src={e.img} alt={e.title} width={1200} height={1500} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-              </div>
-              <div className="absolute inset-x-0 bottom-0 p-6">
-                <p className="text-[11px] uppercase tracking-[0.2em] text-primary">{e.tag}</p>
-                <h3 className="mt-2 text-2xl">{e.title}</h3>
-                <p className="mt-3 text-sm text-muted-foreground">{e.body}</p>
-                <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-4">
-                  <span className="text-[11px] uppercase tracking-wider text-muted-foreground">{e.meta}</span>
-                  <a href="#enquiry" className="text-sm font-semibold text-primary">Plan this →</a>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* FULL-BLEED SPLIT */}
-      <section className="relative border-y border-border">
-        <div className="grid lg:grid-cols-2">
-          <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[560px] overflow-hidden">
-            <img src={crowdImg} alt="Crowd cheering" loading="lazy" className="h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/20 to-background/60 lg:bg-gradient-to-r lg:from-transparent lg:to-background/80" />
-          </div>
-          <div className="relative flex items-center bg-surface/40 p-10 lg:p-16">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-primary">The full production</p>
-              <h2 className="mt-3 text-4xl leading-tight sm:text-5xl">
-                We don't rent you a ground.<br />
-                <em className="text-primary">We produce your finals.</em>
-              </h2>
-              <p className="mt-5 max-w-md text-muted-foreground">
-                Live commentary, LED scoreboards, walk-out music, camera crew, trophy ceremonies, edited recap films the same week. Every match feels like a broadcast.
-              </p>
-              <div className="mt-8 grid grid-cols-2 gap-4 max-w-md">
-                <Stat n="120+" l="Events / year" />
-                <Stat n="98%" l="Repeat rate" />
-                <Stat n="2 hr" l="Reply SLA" />
-                <Stat n="0" l="Vendors to chase" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SPORTS TILES */}
-      <section id="sports" className="mx-auto max-w-7xl px-6 py-24">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
-          <div>
-            <p className="text-xs uppercase tracking-[0.25em] text-primary">The playbook</p>
-            <h2 className="mt-3 text-4xl sm:text-5xl">8 formats.<br />Every skill level.<br />One brief.</h2>
-            <p className="mt-5 text-muted-foreground">
-              Mix and match sports across a single day. Beginners, veterans and everyone in between — our referees run brackets that keep every team in the game until the final whistle.
-            </p>
-            <div className="mt-8 overflow-hidden rounded-2xl border border-border">
-              <img src={scoreboardImg} alt="Live scoreboard" loading="lazy" className="w-full object-cover" />
-            </div>
-          </div>
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4 auto-rows-fr">
-            {sports.map((s, i) => (
-              <li key={s.name} className={`group relative overflow-hidden rounded-2xl border border-border transition hover:border-primary/60 ${i % 3 === 0 ? "row-span-2" : ""}`}>
-                <img src={s.img} alt={s.name} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
-                <div className="relative flex h-full min-h-[140px] flex-col justify-between p-4">
-                  <span className="font-display text-sm text-primary/90">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="text-lg font-semibold">{s.name}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* GALLERY / MOMENTS */}
-      <section id="gallery" className="border-y border-border bg-surface/40">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <div className="flex items-end justify-between gap-6 flex-wrap">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-primary">Moments</p>
-              <h2 className="mt-3 text-4xl sm:text-5xl">The bits your team will still talk about in Q4.</h2>
-            </div>
-            <p className="max-w-xs text-sm text-muted-foreground">Every event goes home with a highlight film, a shared album, and a trophy that lives on someone's desk for a year.</p>
-          </div>
-          <div className="mt-12 grid grid-cols-6 gap-3 md:gap-4 auto-rows-[120px] md:auto-rows-[160px]">
-            <GalleryCell src={trophyImg} alt="Trophy" className="col-span-3 row-span-2" />
-            <GalleryCell src={cricketImg} alt="Cricket" className="col-span-3 row-span-3" />
-            <GalleryCell src={shuttleImg} alt="Shuttlecock" className="col-span-2 row-span-2" />
-            <GalleryCell src={kitImg} alt="Kit" className="col-span-1 row-span-2" />
-            <GalleryCell src={crowdImg} alt="Crowd" className="col-span-3 row-span-2" />
-            <GalleryCell src={padelImg} alt="Padel" className="col-span-3 row-span-2" />
-            <GalleryCell src={footballImg} alt="Football" className="col-span-2 row-span-2" />
-            <GalleryCell src={scoreboardImg} alt="Scoreboard" className="col-span-4 row-span-2" />
-          </div>
-        </div>
-      </section>
-
-      {/* WHY */}
-      <section id="why" className="mx-auto max-w-7xl px-6 py-24">
-        <p className="text-xs uppercase tracking-[0.25em] text-primary">Why Sportyzo Corporate</p>
-        <h2 className="mt-3 max-w-3xl text-4xl sm:text-5xl">The operational muscle behind India's smoothest corporate sports days.</h2>
-        <div className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-border bg-border md:grid-cols-2 lg:grid-cols-4">
+      {/* 4. ANIMATED STATS COUNTER */}
+      <section className="relative z-10 -mt-16 mx-auto max-w-7xl px-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {[
-            { t: "Turnkey, end-to-end", d: "Format design, permissions, referees, kits, medals, catering, MC, DJ, drone recap — one PO covers it.", n: "01" },
-            { t: "12+ premium venues", d: "Indoor and outdoor grounds across Sector 49, 51, 62, 65, 66, 70, 71, 72 and beyond.", n: "02" },
-            { t: "Dedicated event lead", d: "A single named manager from brief to recap deck. No group chats with 14 vendors.", n: "03" },
-            { t: "Certified referees", d: "Neutral, tournament-grade officiating so every match feels like it matters.", n: "04" },
-          ].map((f) => (
-            <div key={f.t} className="group bg-background p-8 transition hover:bg-surface">
-              <div className="font-display text-4xl text-primary/60 group-hover:text-primary transition">{f.n}</div>
-              <h3 className="mt-6 font-display text-2xl">{f.t}</h3>
-              <p className="mt-3 text-sm text-muted-foreground">{f.d}</p>
+            { label: "Active Students", value: "2,500+", icon: Users },
+            { label: "Locations", value: "12+", icon: Map },
+            { label: "5-Star Reviews", value: "1.2k+", icon: Star },
+            { label: "Years Experience", value: "5+", icon: Award },
+          ].map((stat, i) => (
+            <div key={i} className={`bg-surface border border-border rounded-2xl p-6 shadow-xl flex flex-col items-center text-center animate-fade-in-up delay-${(i+1)*100}`}>
+              <div className="h-12 w-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-4">
+                <stat.icon size={24} />
+              </div>
+              <div className="text-3xl font-black text-foreground">{stat.value}</div>
+              <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider mt-1">{stat.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* PROOF */}
-      <section id="proof" className="border-t border-border bg-surface/40 relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 opacity-20">
-          <img src={kitImg} alt="" className="h-full w-full object-cover" />
-        </div>
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <div className="grid gap-10 lg:grid-cols-3">
-            {[
-              { q: "Sportyzo handled our 400-person offsite end-to-end. Referees, kits, meals, recap video — all of it. Our CEO called it our best offsite in 6 years.", a: "Head of People, Fintech scale-up" },
-              { q: "We did a badminton + box cricket R&R night for the sales team. Slick brackets, real trophies, everyone stayed till the last match.", a: "Sales Director, SaaS" },
-              { q: "Added a 2-hour sports break to our annual conference. Attendee NPS went from 62 to 84 vs last year.", a: "Marketing Lead, Consulting firm" },
-            ].map((t, i) => (
-              <figure key={i} className="rounded-3xl border border-border bg-background/90 backdrop-blur p-8">
-                <div className="text-primary">★★★★★</div>
-                <blockquote className="mt-4 font-display text-xl leading-snug">"{t.q}"</blockquote>
-                <figcaption className="mt-6 text-xs uppercase tracking-wider text-muted-foreground">— {t.a}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <img src={trophyImg} alt="" className="h-full w-full object-cover opacity-25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
-        </div>
-        <div className="mx-auto max-w-7xl px-6 py-28 text-center">
-          <h2 className="text-5xl sm:text-7xl">
-            Let's build your team's<br /><em className="text-primary">best day</em> of the year.
-          </h2>
-          <p className="mx-auto mt-6 max-w-xl text-muted-foreground">
-            Share your brief — team size, date window, sports of interest. A costed plan lands in your inbox within 2 working hours.
-          </p>
-          <a href="#enquiry" className="mt-10 inline-flex rounded-full bg-primary px-8 py-4 text-sm font-bold text-primary-foreground glow-primary hover:scale-[1.02] transition">
-            Request a proposal →
-          </a>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-border">
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-12 md:grid-cols-[1.5fr_1fr_1fr]">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground font-black">S</span>
-              <span className="text-lg font-semibold">Sportyzo Corporate</span>
+      {/* 5. ABOUT US */}
+      <section id="about" className="py-24 mx-auto max-w-7xl px-6">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="relative">
+            <div className="aspect-square rounded-3xl overflow-hidden border border-border relative z-10">
+              <img src={cricketImg} alt="Cricket training" className="w-full h-full object-cover" />
             </div>
-            <p className="mt-3 max-w-sm text-sm text-muted-foreground">
-              A division of Dominic Sports Private Limited. Turnkey corporate sports events across Gurgaon since 2021.
-            </p>
+            <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-primary/20 rounded-full blur-3xl -z-10" />
+            <div className="absolute -bottom-6 -left-6 bg-surface border border-border rounded-2xl p-6 shadow-xl z-20 max-w-xs animate-fade-in-up delay-200">
+              <div className="flex items-center gap-4">
+                <div className="text-4xl font-black text-primary">10k+</div>
+                <div className="text-sm text-muted-foreground font-medium leading-tight">Hours of coaching<br/>delivered yearly</div>
+              </div>
+            </div>
           </div>
-          <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Talk to us</p>
-            <ul className="mt-3 space-y-1.5 text-sm">
-              <li><a href="tel:+918527736149" className="hover:text-primary">+91 85277 36149</a></li>
-              <li><a href="mailto:sportyzowork@gmail.com" className="hover:text-primary">sportyzowork@gmail.com</a></li>
-              <li className="text-muted-foreground">6 AM – 12 AM · Mon–Sun</li>
+          <div className="animate-fade-in-up">
+            <span className="text-primary font-bold tracking-wider uppercase text-sm">Who We Are</span>
+            <h2 className="text-4xl sm:text-5xl font-black mt-4 mb-6 leading-tight">Shaping the future of sports in Gurugram.</h2>
+            <div className="space-y-6 text-muted-foreground text-lg">
+              <p>
+                Sportyzo is not just a facility; it's an ecosystem designed for athletes of all levels. From grassroots development to elite performance training, we provide the infrastructure and expertise to help you achieve your goals.
+              </p>
+              <p>
+                With state-of-the-art arenas across <strong className="text-foreground">Sector 49, 65, and 72</strong>, we bring world-class sports education right to your neighborhood. Our philosophy focuses on holistic development, combining technical skills with physical fitness and mental resilience.
+              </p>
+            </div>
+            <ul className="mt-8 space-y-3">
+              {['BCCI & AIFF Certified Coaches', 'Floodlit Professional Arenas', 'Performance Tracking Tech'].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 font-medium">
+                  <CheckCircle2 className="text-primary" size={20} /> {item}
+                </li>
+              ))}
             </ul>
           </div>
-          <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">Venues</p>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Sector 49, 51, 62, 65, 66, 70, 71, 72 · Gurugram, Haryana
-            </p>
+        </div>
+      </section>
+
+      {/* 6. WHY CHOOSE US GRID */}
+      <section className="py-24 bg-surface-2 border-y border-border">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
+            <span className="text-primary font-bold tracking-wider uppercase text-sm">The Sportyzo Advantage</span>
+            <h2 className="text-4xl sm:text-5xl font-black mt-4">Why Athletes Choose Us</h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { title: "Certified Coaches", desc: "Train under former national players and certified experts.", icon: Award },
+              { title: "Pro Facilities", desc: "BWF-approved mats, FIFA-grade turf, and premium lighting.", icon: MapPin },
+              { title: "Holistic Growth", desc: "Focus on fitness, nutrition, and sports psychology.", icon: Users },
+              { title: "Flexible Timings", desc: "Batches running from 6 AM to 10 PM, 7 days a week.", icon: Calendar },
+            ].map((feature, i) => (
+              <div key={i} className="bg-background rounded-3xl p-8 border border-border shadow-sm hover:shadow-xl hover:border-primary/50 transition-all duration-300 group animate-fade-in-up" style={{animationDelay: `${i*100}ms`}}>
+                <div className="h-14 w-14 rounded-2xl bg-surface flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+                  <feature.icon size={28} />
+                </div>
+                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="border-t border-border py-5 text-center text-xs text-muted-foreground">
-          © 2021–2026 Dominic Sports Private Limited. All rights reserved.
+      </section>
+
+      {/* 7. SPORTS / PROGRAMS */}
+      <section id="sports" className="py-24 mx-auto max-w-7xl px-6">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-16 animate-fade-in-up">
+          <div className="max-w-2xl">
+            <span className="text-primary font-bold tracking-wider uppercase text-sm">Programs</span>
+            <h2 className="text-4xl sm:text-5xl font-black mt-4">Find Your Sport</h2>
+          </div>
+          <p className="text-muted-foreground md:max-w-sm">From beginners to advanced, we have tailored programs for every age and skill level across our network.</p>
+        </div>
+        
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { name: "Cricket", img: cricketImg, cat: "Outdoor", level: "All Levels" },
+            { name: "Football", img: footballImg, cat: "Outdoor", level: "All Levels" },
+            { name: "Badminton", img: badmintonImg, cat: "Indoor", level: "All Levels" },
+            { name: "Padel", img: padelImg, cat: "Outdoor", level: "Beginner/Pro" },
+            { name: "Tennis", img: shuttleImg, cat: "Outdoor", level: "All Levels" },
+            { name: "Basketball", img: footballImg, cat: "Indoor", level: "Intermediate" },
+            { name: "Table Tennis", img: shuttleImg, cat: "Indoor", level: "All Levels" },
+            { name: "Pickleball", img: padelImg, cat: "Outdoor", level: "Beginner" },
+          ].map((sport, i) => (
+            <a href="#" key={i} className="group relative h-80 rounded-3xl overflow-hidden block border border-border animate-fade-in-up" style={{animationDelay: `${(i%4)*100}ms`}}>
+              <img src={sport.img} alt={sport.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+              <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                <div className="flex gap-2 mb-3">
+                  <span className="bg-primary/90 text-primary-foreground text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded backdrop-blur-sm">{sport.cat}</span>
+                  <span className="bg-surface/80 text-foreground text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded backdrop-blur-sm border border-border">{sport.level}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-2xl font-bold">{sport.name}</h3>
+                  <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                    <ArrowRight size={16} />
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* 8. PROCESS / PHILOSOPHY */}
+      <section className="py-24 bg-surface text-center px-6 relative overflow-hidden border-y border-border">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
+        <div className="mx-auto max-w-5xl animate-fade-in-up">
+          <MessageCircle size={48} className="mx-auto text-primary/40 mb-6" />
+          <h2 className="text-3xl sm:text-5xl font-display font-medium leading-tight mb-16">
+            "We don't just train players; we build athletes who understand the game, respect the process, and push their limits."
+          </h2>
+          
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
+            {[
+              { title: "Assessment", desc: "Initial skill and fitness evaluation to baseline capabilities." },
+              { title: "Foundation", desc: "Focusing on core mechanics, footwork, and basic rules." },
+              { title: "Development", desc: "Advanced drills, game awareness, and match simulations." },
+              { title: "Performance", desc: "Competitive matches, tournament prep, and mental conditioning." },
+            ].map((step, i) => (
+              <div key={i} className="relative">
+                <div className="text-6xl font-black text-primary/10 mb-4 tracking-tighter">0{i+1}</div>
+                <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                <p className="text-sm text-muted-foreground">{step.desc}</p>
+                {i < 3 && <div className="hidden lg:block absolute top-8 -right-4 w-8 border-t-2 border-dashed border-border" />}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 9. LOCATIONS */}
+      <section id="locations" className="py-24 mx-auto max-w-7xl px-6">
+        <div className="text-center max-w-2xl mx-auto mb-16 animate-fade-in-up">
+          <span className="text-primary font-bold tracking-wider uppercase text-sm">Where We Are</span>
+          <h2 className="text-4xl sm:text-5xl font-black mt-4">12+ Locations Across Gurugram</h2>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { name: "Sector 49 Arena", addr: "Near Golf Course Ext Rd", sports: "Cricket, Football, Padel" },
+            { name: "Sector 65 Hub", addr: "M3M Urbana Vicinity", sports: "Badminton, Tennis" },
+            { name: "Sector 72 Complex", addr: "SPR Road", sports: "Football, Basketball, Table Tennis" },
+          ].map((loc, i) => (
+            <div key={i} className="bg-surface rounded-3xl p-8 border border-border hover:border-primary/50 transition-colors animate-fade-in-up" style={{animationDelay: `${i*100}ms`}}>
+              <MapPin className="text-primary mb-4" size={32} />
+              <h3 className="text-2xl font-bold mb-2">{loc.name}</h3>
+              <p className="text-muted-foreground mb-6">{loc.addr}</p>
+              <div className="bg-background rounded-xl p-4 border border-border">
+                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 block">Available Sports</span>
+                <p className="font-medium text-sm">{loc.sports}</p>
+              </div>
+              <a href="#" className="mt-6 inline-flex items-center gap-2 text-primary font-bold hover:underline">
+                View on Map <ArrowRight size={16} />
+              </a>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-10">
+          <button className="rounded-full border border-border bg-surface px-8 py-3 font-bold hover:bg-surface-2 transition">
+            View All Locations
+          </button>
+        </div>
+      </section>
+
+      {/* 10. HOW TO JOIN */}
+      <section id="join" className="py-24 bg-primary text-primary-foreground">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-black">Ready to step on the field?</h2>
+            <p className="mt-4 text-primary-foreground/80 max-w-xl mx-auto">Join our academy in 4 simple steps and start your journey to excellence.</p>
+          </div>
+          
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { title: "Choose Sport", icon: Award },
+              { title: "Visit / Call", icon: Phone },
+              { title: "Free Trial", icon: Calendar },
+              { title: "Enroll", icon: CheckCircle2 },
+            ].map((step, i) => (
+              <div key={i} className="bg-background/10 backdrop-blur-md rounded-3xl p-8 border border-primary-foreground/20 text-center relative overflow-hidden group">
+                <div className="absolute inset-0 bg-background/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                <div className="relative z-10">
+                  <div className="h-16 w-16 mx-auto rounded-full bg-primary-foreground text-primary flex items-center justify-center mb-6 text-2xl font-black shadow-xl">
+                    <step.icon size={28} />
+                  </div>
+                  <div className="text-sm font-bold uppercase tracking-widest text-primary-foreground/70 mb-2">Step 0{i+1}</div>
+                  <h3 className="text-2xl font-bold">{step.title}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="mt-16 text-center">
+            <a href="https://wa.me/918527736149" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 rounded-full bg-background px-10 py-5 text-lg font-black text-primary hover:scale-105 transition shadow-2xl">
+              <MessageCircle size={24} /> Book Your Free Trial on WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 11. FAQ */}
+      <section className="py-24 mx-auto max-w-3xl px-6">
+        <div className="text-center mb-16">
+          <span className="text-primary font-bold tracking-wider uppercase text-sm">Got Questions?</span>
+          <h2 className="text-4xl sm:text-5xl font-black mt-4">Frequently Asked Questions</h2>
+        </div>
+        
+        <Accordion.Root type="single" collapsible className="space-y-4">
+          {[
+            { q: "What age groups do you cater to?", a: "We offer programs for kids starting from age 5, all the way up to adults and senior corporate batches." },
+            { q: "Do you provide equipment?", a: "For trial classes, we provide all necessary equipment. Once enrolled, we recommend purchasing your own personal kit, though shared equipment is available." },
+            { q: "Can I take a trial class before joining?", a: "Absolutely! We offer a 1-day free trial for all our regular academy batches." },
+            { q: "Are the coaches certified?", a: "Yes, all our head coaches hold national or international certifications in their respective sports." },
+            { q: "What are your operating hours?", a: "Our facilities are open from 6:00 AM to 12:00 Midnight, seven days a week." },
+          ].map((faq, i) => (
+            <Accordion.Item key={i} value={`item-${i}`} className="bg-surface border border-border rounded-2xl overflow-hidden data-[state=open]:border-primary/50 transition-colors">
+              <Accordion.Header>
+                <Accordion.Trigger className="flex flex-1 items-center justify-between py-5 px-6 font-bold text-left w-full hover:text-primary transition-colors [&[data-state=open]>svg]:rotate-180">
+                  {faq.q}
+                  <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform duration-300" />
+                </Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content className="px-6 pb-5 text-muted-foreground overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                {faq.a}
+              </Accordion.Content>
+            </Accordion.Item>
+          ))}
+        </Accordion.Root>
+      </section>
+
+      {/* 12. FOOTER */}
+      <footer className="bg-surface-2 border-t border-border pt-20 pb-10">
+        <div className="mx-auto max-w-7xl px-6 grid gap-12 lg:grid-cols-4 md:grid-cols-2">
+          <div className="lg:col-span-1">
+            <a href="#" className="flex items-center gap-2 mb-6">
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground font-black text-xl">S</span>
+              <span className="text-2xl font-bold tracking-tight">Sportyzo</span>
+            </a>
+            <p className="text-sm text-muted-foreground mb-6">
+              The premier destination for sports training, corporate events, and pay-n-play facilities in Gurugram.
+            </p>
+            <div className="flex gap-4">
+              <a href="#" className="h-10 w-10 rounded-full bg-surface border border-border flex items-center justify-center hover:text-primary hover:border-primary transition"><Instagram size={18} /></a>
+              <a href="#" className="h-10 w-10 rounded-full bg-surface border border-border flex items-center justify-center hover:text-primary hover:border-primary transition"><Facebook size={18} /></a>
+              <a href="#" className="h-10 w-10 rounded-full bg-surface border border-border flex items-center justify-center hover:text-primary hover:border-primary transition"><Youtube size={18} /></a>
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="font-bold text-foreground mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
+            <ul className="space-y-3 text-sm text-muted-foreground">
+              <li><a href="#about" className="hover:text-primary transition">About Us</a></li>
+              <li><a href="#sports" className="hover:text-primary transition">Programs</a></li>
+              <li><a href="#locations" className="hover:text-primary transition">Venues</a></li>
+              <li><a href="#" className="hover:text-primary transition">Careers</a></li>
+              <li><a href="#" className="hover:text-primary transition">Contact Us</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-bold text-foreground mb-6 uppercase tracking-wider text-sm">Sports</h4>
+            <ul className="space-y-3 text-sm text-muted-foreground">
+              <li><a href="#" className="hover:text-primary transition">Cricket</a></li>
+              <li><a href="#" className="hover:text-primary transition">Football</a></li>
+              <li><a href="#" className="hover:text-primary transition">Badminton</a></li>
+              <li><a href="#" className="hover:text-primary transition">Padel</a></li>
+              <li><a href="#" className="hover:text-primary transition">Tennis</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-bold text-foreground mb-6 uppercase tracking-wider text-sm">Contact</h4>
+            <ul className="space-y-4 text-sm text-muted-foreground">
+              <li className="flex items-start gap-3">
+                <MapPin size={18} className="text-primary shrink-0 mt-0.5" />
+                <span>Sector 49, Sector 65, Sector 72<br/>Gurugram, Haryana</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone size={18} className="text-primary shrink-0" />
+                <a href="tel:+918527736149" className="hover:text-primary transition">+91 85277 36149</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail size={18} className="text-primary shrink-0" />
+                <a href="mailto:sportyzowork@gmail.com" className="hover:text-primary transition">sportyzowork@gmail.com</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="mx-auto max-w-7xl px-6 mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+          <p>© {new Date().getFullYear()} Dominic Sports Private Limited. All rights reserved.</p>
+          <div className="flex gap-4">
+            <a href="#" className="hover:text-primary transition">Privacy Policy</a>
+            <a href="#" className="hover:text-primary transition">Terms of Service</a>
+          </div>
         </div>
       </footer>
-    </div>
-  );
-}
 
-function Stat({ n, l }: { n: string; l: string }) {
-  return (
-    <div className="rounded-2xl border border-border bg-background/50 p-4">
-      <div className="font-display text-3xl text-primary">{n}</div>
-      <div className="mt-1 text-[11px] uppercase tracking-wider text-muted-foreground">{l}</div>
-    </div>
-  );
-}
-
-function GalleryCell({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
-  return (
-    <div className={`group relative overflow-hidden rounded-2xl border border-border ${className}`}>
-      <img src={src} alt={alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-110" />
-      <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition" />
-    </div>
-  );
-}
-
-const inputCls =
-  "w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition";
-const selectCls = `${inputCls} appearance-none pr-8`;
-
-function Label({ children }: { children: React.ReactNode }) {
-  return <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-muted-foreground">{children}</label>;
-}
-function Field({ name, label, type = "text", required, placeholder }: {
-  name: string; label: string; type?: string; required?: boolean; placeholder?: string;
-}) {
-  return (
-    <div>
-      <Label>{label}{required && <span className="text-primary"> *</span>}</Label>
-      <input name={name} type={type} required={required} placeholder={placeholder} maxLength={200} className={inputCls} />
+      {/* 13. FLOATING ACTION BUTTONS */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <a href="tel:+918527736149" className="h-14 w-14 bg-surface text-foreground rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition border border-border group relative">
+          <Phone size={24} />
+          <span className="absolute right-full mr-3 whitespace-nowrap bg-foreground text-background px-3 py-1.5 rounded-lg text-xs font-bold opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">Call Us</span>
+        </a>
+        <a href="https://wa.me/918527736149" target="_blank" rel="noreferrer" className="h-14 w-14 bg-[#25D366] text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition group relative">
+          <MessageCircle size={28} />
+          <span className="absolute right-full mr-3 whitespace-nowrap bg-foreground text-background px-3 py-1.5 rounded-lg text-xs font-bold opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">WhatsApp</span>
+        </a>
+      </div>
     </div>
   );
 }
